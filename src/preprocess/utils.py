@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import List
 
 import fitz  # PyMuPDF
 from tqdm import tqdm
@@ -28,3 +29,13 @@ def open_and_read_pdf(pdf_path: Path) -> str:
         )
 
     return pages_and_text
+
+
+def split_list(input_list: List[str], slice_size: int = 10) -> List[List[str]]:
+    """
+    Turn groups of sentences into chunks.
+    e.g. [20] -> [10, 10] or [25] -> [10, 10, 5]
+    """
+    return [
+        input_list[i : i + slice_size] for i in range(0, len(input_list), slice_size)
+    ]
