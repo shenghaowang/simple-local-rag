@@ -5,7 +5,7 @@ from loguru import logger
 
 
 def main():
-    pdf_path = Path("human-nutrition-text.pdf")
+    pdf_path = Path("data/human-nutrition-text.pdf")
 
     if not pdf_path.exists():
         logger.info("File doesn't exist. Downloading...")

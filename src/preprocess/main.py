@@ -3,8 +3,8 @@ import re
 from pathlib import Path
 
 import pandas as pd
-import requests
 from loguru import logger
+from sentence_transformers import SentenceTransformer
 from spacy.lang.en import English
 from tqdm import tqdm
 
@@ -12,31 +12,7 @@ from preprocess.utils import open_and_read_pdf, split_list
 
 
 def main():
-    pdf_path = Path("human-nutrition-text.pdf")
-
-    if not pdf_path.exists():
-        logger.info("File doesn't exist. Downloading...")
-
-        # Enter the URL of the PDF
-        url = "https://pressbooks.oer.hawaii.edu/humannutrition2/open/download?type=pdf"
-
-        # Send a GET request to the URL
-        response = requests.get(url)
-
-        # Check if the request was successful
-        if response.status_code == 200:
-            # Open the file and save it
-            with open(pdf_path, "wb") as file:
-                file.write(response.content)
-            logger.info(f"File downloaded and saved as {pdf_path}")
-        else:
-            logger.error(
-                f"Failed to download the file. Status code: {response.status_code}"
-            )
-
-    else:
-        logger.info("File already exists. Skipping download.")
-
+    pdf_path = Path("data/human-nutrition-text.pdf")
     pages_and_texts = open_and_read_pdf(pdf_path=pdf_path)
 
     # Split pages into sentences
@@ -92,6 +68,20 @@ def main():
         df["chunk_token_count"] >= min_chunk_length
     ].to_dict(orient="records")
     logger.debug(random.sample(pages_and_chunks_over_min_token_len, k=1))
+
+    embedding_model = SentenceTransformer(
+        model_name_or_path="all-mpnet-base-v2", device="cpu"
+    )
+    embedding_model.to("mps")
+    for item in tqdm(pages_and_chunks_over_min_token_len):
+        item["embedding"] = embedding_model.encode(
+            item["sentence_chunk"], show_progress_bar=False
+        )
+
+    # Save embeddings to file
+    text_chunks_and_embeddings_df = pd.DataFrame(pages_and_chunks_over_min_token_len)
+    embeddings_df_save_path = Path("data/text_chunks_and_embeddings.csv")
+    text_chunks_and_embeddings_df.to_csv(embeddings_df_save_path, index=False)
 
 
 if __name__ == "__main__":
