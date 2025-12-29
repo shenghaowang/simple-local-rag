@@ -65,3 +65,54 @@ All locally!
 
 1. Step 1-3: Document preprocessing and embedding creation.
 2. Step 4-6: Search and answer.
+
+---
+
+## 📦 Installation
+
+To set up the project using a Python virtual environment, follow the steps below.
+
+1. **Clone the repository**
+```bash
+git clone https://github.com/shenghaowang/simple-local-rag.git
+cd simple-local-rag
+```
+
+2. **Create a virtual environment**
+```bash
+python3 -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+```
+
+3. **Install dependencies**
+```bash
+pip install -r requirements.txt
+```
+
+4. **Install the `pre-commit` hooks**
+```bash
+pre-commit install
+pre-commit run --all-files
+```
+
+## 🔥 Usage
+
+### Download PDF doc
+
+```bash
+python src/data/main.py
+```
+
+### Preprocess text and export embeddings to file
+
+```bash
+export PYTHONPATH=src
+python src/preprocess/main.py
+```
+
+### Retrieve relevant passages and generate output given specific query
+
+```bash
+export PYTHONPATH=src
+python src/rag/main.py
+```
