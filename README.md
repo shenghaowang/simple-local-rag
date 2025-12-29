@@ -1,6 +1,6 @@
-# Create and run a local RAG pipeline from scratch
+# NutriChat
 
-Adapted from Daniel Bourke's [RAG tutorial](https://github.com/mrdbourke/simple-local-rag).
+Create and run a local RAG pipeline from scratch to chat with a nutrition textbook. Adapted from Daniel Bourke's [RAG tutorial](https://github.com/mrdbourke/simple-local-rag).
 
 ## What is RAG?
 
