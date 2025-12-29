@@ -95,6 +95,8 @@ pre-commit install
 pre-commit run --all-files
 ```
 
+---
+
 ## 🔥 Usage
 
 ### Download PDF doc
@@ -111,6 +113,8 @@ python src/preprocess/main.py
 ```
 
 ### Retrieve relevant passages and generate output given specific query
+
+Requires access to the gated Hugging Face model [`meta-llama/Llama-3.2-1B-Instruct`](https://huggingface.co/meta-llama/Llama-3.2-1B-Instruct). Ensure your Hugging Face account is logged in and authorized.
 
 ```bash
 export PYTHONPATH=src
